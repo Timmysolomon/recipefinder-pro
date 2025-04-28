@@ -1,103 +1,108 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import axios from 'axios';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [query, setQuery] = useState('');
+  const [recipes, setRecipes] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleSearch = async () => {
+    if (query.trim() === '') return;
+
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `https://api.spoonacular.com/recipes/complexSearch`,
+        {
+          params: {
+            query: query,
+            number: 10,
+            apiKey: '9d8cd71dff1949a5b6eb35a0f999776a',
+          },
+        }
+      );
+      setRecipes(response.data.results);
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <main className="min-h-screen flex flex-col items-center justify-start py-12 px-4 bg-[var(--background)] text-[var(--text-color)]">
+      {/* Main Title */}
+      <h1 className="text-5xl font-extrabold mb-4 animate-fade-in text-[var(--primary)] text-center">
+        Find Your Perfect Recipe
+      </h1>
+
+      {/* Subheading */}
+      <p className="text-xl mb-6 text-center text-[var(--secondary)]">
+        Search thousands of recipes and cook up something delicious!
+      </p>
+
+      {/* Motivational Quote */}
+      <p className="italic text-md mb-12 text-center text-[var(--secondary)]">
+        "Good food = Good mood."
+      </p>
+
+      {/* Search Bar */}
+      <div className="flex flex-col sm:flex-row gap-4 mb-12 w-full max-w-md">
+        <input
+          type="text"
+          placeholder="Search recipes (e.g., pasta, chicken)..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="flex-1 p-3 border border-[var(--secondary)] rounded-lg bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+        />
+        <button
+          onClick={handleSearch}
+          disabled={isLoading}
+          className="px-6 py-3 bg-[var(--primary)] text-white rounded-lg hover:bg-[var(--secondary)] transition disabled:opacity-50"
+        >
+          {isLoading ? 'Searching...' : 'Search'}
+        </button>
+      </div>
+
+      {/* Recipes Grid */}
+      {recipes.length > 0 && (
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full max-w-6xl animate-fade-in">
+          {recipes.map((recipe) => (
+            <div
+              key={recipe.id}
+              className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition duration-300"
+            >
+              <img
+                src={recipe.image}
+                alt={recipe.title}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-[var(--primary)] mb-2">{recipe.title}</h3>
+                <a
+                  href={`https://spoonacular.com/recipes/${recipe.title
+                    .toLowerCase()
+                    .replace(/ /g, '-')}-${recipe.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-[var(--secondary)] hover:underline"
+                >
+                  View Recipe
+                </a>
+              </div>
+            </div>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      )}
+
+      {/* No Results */}
+      {!isLoading && recipes.length === 0 && query.trim() !== '' && (
+        <p className="mt-8 text-center text-[var(--secondary)]">
+          No recipes found. Try another search!
+        </p>
+      )}
+    </main>
   );
 }

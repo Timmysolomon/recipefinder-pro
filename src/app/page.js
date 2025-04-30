@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import axios from 'axios';
-import RecipeCard from './components/RecipeCard'; // adjust path if needed
+import RecipeCard from '../components/RecipeCard'; // ✅ corrected import path
 
 export default function Home() {
   const [query, setQuery] = useState('');
@@ -51,32 +51,4 @@ export default function Home() {
           placeholder="Search recipes (e.g., pasta, chicken)..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="flex-1 p-3 border border-gray-600 rounded-lg bg-[#1a1a1a] focus:outline-none focus:ring-2 focus:ring-[#b08968]"
-        />
-        <button
-          onClick={handleSearch}
-          disabled={isLoading}
-          className="px-6 py-3 bg-[#b08968] text-black rounded-lg hover:bg-[#a17857] transition disabled:opacity-50"
-        >
-          {isLoading ? 'Searching...' : 'Search'}
-        </button>
-      </div>
-
-      {/* Recipes Grid */}
-      {recipes.length > 0 && (
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full max-w-6xl">
-          {recipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} />
-          ))}
-        </div>
-      )}
-
-      {/* No Results Message */}
-      {recipes.length === 0 && !isLoading && (
-        <p className="text-gray-500 text-sm mt-10 text-center">
-          Try searching for something like &quot;pasta&quot; or &quot;salad&quot;!
-        </p>
-      )}
-    </main>
-  );
-}
+          className="flex-1 p-3 border border-gray-600 rounded-lg bg-[#1a1a1a] focus:outline-none focus:ring-2 focus:ring

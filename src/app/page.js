@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import axios from 'axios';
-import RecipeCard from '../components/RecipeCard'; // ✅ CASE-SENSITIVE fix
+import RecipeCard from '../components/RecipeCard';
 
 export default function Home() {
   const [query, setQuery] = useState('');
@@ -44,7 +44,6 @@ export default function Home() {
         &quot;Good food = Good mood.&quot;
       </p>
 
-      {/* Search Bar */}
       <div className="flex flex-col sm:flex-row gap-4 mb-12 w-full max-w-md">
         <input
           type="text"
@@ -62,7 +61,6 @@ export default function Home() {
         </button>
       </div>
 
-      {/* Recipes Grid */}
       {recipes.length > 0 && (
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full max-w-6xl">
           {recipes.map((recipe) => (
@@ -71,7 +69,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* No Results Message */}
       {recipes.length === 0 && !isLoading && (
         <p className="text-gray-500 text-sm mt-10 text-center">
           Try searching for something like &quot;pasta&quot; or &quot;salad&quot;!

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import axios from 'axios';
-import RecipeCard from '../components/RecipeCard'; // ✅ corrected import path
+import RecipeCard from '../components/RecipeCard'; // ✅ correct path
 
 export default function Home() {
   const [query, setQuery] = useState('');
@@ -33,22 +33,4 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-start py-12 px-4 bg-[#0f0f0f] text-white">
-      <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-center text-[#b08968]">
-        Find Your Perfect Recipe
-      </h1>
-      <p className="text-lg mb-6 text-center text-gray-400">
-        Search thousands of recipes and cook up something delicious!
-      </p>
-      <p className="italic text-sm mb-10 text-center text-gray-500">
-        &quot;Good food = Good mood.&quot;
-      </p>
-
-      {/* Search Bar */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-12 w-full max-w-md">
-        <input
-          type="text"
-          placeholder="Search recipes (e.g., pasta, chicken)..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="flex-1 p-3 border border-gray-600 rounded-lg bg-[#1a1a1a] focus:outline-none focus:ring-2 focus:ring
+    <main className="min-h-screen flex flex-col items-center justify-start py-12 px-4 bg-[#0f0]()

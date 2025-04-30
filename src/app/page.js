@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import axios from 'axios';
-import RecipeCard from '../components/RecipeCard';
+import RecipeCard from '../components/RecipeCard'; // ✅ CASE-SENSITIVE fix
 
 export default function Home() {
   const [query, setQuery] = useState('');

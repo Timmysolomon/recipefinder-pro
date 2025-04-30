@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import axios from 'axios';
+import Image from 'next/image';
 
 export default function Home() {
   const [query, setQuery] = useState('');
@@ -45,7 +46,7 @@ export default function Home() {
 
       {/* Motivational Quote */}
       <p className="italic text-md mb-12 text-center text-[var(--secondary)]">
-        "Good food = Good mood."
+        &quot;Good food = Good mood.&quot;
       </p>
 
       {/* Search Bar */}
@@ -64,45 +65,13 @@ export default function Home() {
         >
           {isLoading ? 'Searching...' : 'Search'}
         </button>
-      </div>
+        </div>
 
       {/* Recipes Grid */}
       {recipes.length > 0 && (
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full max-w-6xl animate-fade-in">
-          {recipes.map((recipe) => (
-            <div
-              key={recipe.id}
-              className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition duration-300"
-            >
-              <img
-                src={recipe.image}
-                alt={recipe.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-[var(--primary)] mb-2">{recipe.title}</h3>
-                <a
-                  href={`https://spoonacular.com/recipes/${recipe.title
-                    .toLowerCase()
-                    .replace(/ /g, '-')}-${recipe.id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-[var(--secondary)] hover:underline"
-                >
-                  View Recipe
-                </a>
-              </div>
-            </div>
-          ))}
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 w-full max-w-6xl">
         </div>
       )}
-
-      {/* No Results */}
-      {!isLoading && recipes.length === 0 && query.trim() !== '' && (
-        <p className="mt-8 text-center text-[var(--secondary)]">
-          No recipes found. Try another search!
-        </p>
-      )}
-    </main>
-  );
-}
+          </main>
+        );
+      }
